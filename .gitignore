@@ -14,3 +14,4 @@ Homestead.json
 .env.php
 .env
 .env.example
+/nbproject/private/
