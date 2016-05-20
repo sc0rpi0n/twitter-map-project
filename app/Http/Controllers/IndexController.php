@@ -44,7 +44,9 @@ class IndexController extends Controller
         // add search to History
         
         $searchCookie = isset($_COOKIE['search_history']) ? json_decode($_COOKIE['search_history']) : array();
-        $searchCookie = get_object_vars($searchCookie);
+        if(count($searchCookie)){
+            $searchCookie = get_object_vars($searchCookie);
+        }
         if(array_key_exists($searchTerm, $searchCookie)){
             $searchCookie[$searchTerm]+= 1;
         }else{
