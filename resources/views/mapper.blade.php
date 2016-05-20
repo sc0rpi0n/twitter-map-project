@@ -17,7 +17,7 @@
     <div class="row">
         <div id="Gmap"></div>
         
-        <div id="input-group" class="input-group">
+        <div id="input-group" class="input-group col-lg-6">
             <input id="pac-input" class="form-control" name="location" type="text"
                 placeholder="City Name">
                 
