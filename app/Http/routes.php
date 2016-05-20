@@ -12,3 +12,5 @@
 */
 
 Route::get('/', 'IndexController@mapper');
+
+Route::get('/fetch-tweet', 'IndexController@locateTweets');
