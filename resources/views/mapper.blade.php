@@ -73,7 +73,7 @@
                     
                     $.ajax({
                         method: "GET",
-                        url: "http://localhost/alphaTest/twitter-map-project/public/fetch-tweet",
+                        url: "{{ action('IndexController@locateTweets') }}",
                         data: { search: place.name, geoCode: place.geometry.location.lat() + "," + place.geometry.location.lng()}
                     })
                     .done(function( tweets ) {
