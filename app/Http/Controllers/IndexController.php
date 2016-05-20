@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Config;
 use Cookie;
 
 use App\Http\Requests;
@@ -35,13 +36,14 @@ class IndexController extends Controller
     public function locateTweets(Request $request){
         $searchTerm = $request->get('search');
         $latlong = $request->get('geoCode','');
-        $radius = '50km';    // todo change this to configurable 
-        $geoCode =  ($latlong == '') ? '' : $latlong . ',' . $radius;
         
+        $radius = Config::get('customsettings.tweet_radius');     
+        $geoCode =  ($latlong == '') ? '' : $latlong . ',' . $radius;
         $return = array();
         
-        $hourBefore = date('Y-m-d H:i:s', strtotime('-1 hour'));
+        $hourBefore = date('Y-m-d H:i:s', strtotime('-'.Config::get('customsettings.cache_hour').' hour'));
         $locationTweet = tweet::where('SearchLocation', strtolower($searchTerm))->where('updated_at', '>=', $hourBefore)->get();
+        
         if (count($locationTweet) >  0){
             foreach($locationTweet as $status){
                 $tweet = array(
