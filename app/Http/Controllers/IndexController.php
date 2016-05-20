@@ -120,6 +120,6 @@ class IndexController extends Controller
     public function history(){
         $searchCookie = isset($_COOKIE['search_history']) ? json_decode($_COOKIE['search_history']) : array();
         
-        return view('searchHistory')->with('searchHistory', $searchCookie);
+        return view('searchhistory')->with('searchHistory', $searchCookie);
     }
 }
