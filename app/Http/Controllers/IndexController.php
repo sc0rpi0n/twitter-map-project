@@ -46,8 +46,8 @@ class IndexController extends Controller
             foreach($locationTweet as $status){
                 $tweet = array(
                     'userPic'   =>  $status->userPic,
-                    'lat'       =>  $status->lat,
-                    'lng'       =>  $status->lng,
+                    'lat'       =>  (float)$status->lat,
+                    'lng'       =>  (float)$status->lng,
                     'tweet'     =>  $status->tweet,
                     'createdAt' =>  $status->createdAt
                 );
