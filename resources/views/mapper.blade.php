@@ -10,7 +10,9 @@
 </style>
 <div class="row">
     <div class ="row">
-        <div id="twitter-search-title" class="gm-style-mtc">Please Search Location</div>
+        <div id="twitter-search-title" class="gm-style-mtc"
+             style="direction: ltr; overflow: hidden; text-align: center; position: relative; color: rgb(0, 0, 0); font-family: Roboto,Arial,sans-serif; -moz-user-select: none; font-size: 11px; background-color: rgb(255, 255, 255); padding: 8px; border-bottom-left-radius: 2px; border-top-left-radius: 2px; background-clip: padding-box; box-shadow: 0px 1px 4px -1px rgba(0, 0, 0, 0.3); min-width: 21px; font-weight: 500;"
+             >Please Search Location</div>
     </div>
     <div class="row">
         <div id="Gmap"></div>
@@ -20,7 +22,7 @@
                 placeholder="City Name">
                 
             <span class="input-group-btn">
-                <a href="" class="btn btn-info">History</a>
+                <a href="{{ action('IndexController@history') }}" class="btn btn-info">History</a>
             </span>
         </div>
         
@@ -76,6 +78,7 @@
                     })
                     .done(function( tweets ) {
                         deleteMarkers();
+                        title.innerHTML += " ( Found " + tweets.length +" ) Tweets";
                         $.each(tweets,function(key){
                             addMarker(this);
                        });

@@ -41,6 +41,18 @@ class IndexController extends Controller
         $geoCode =  ($latlong == '') ? '' : $latlong . ',' . $radius;
         $return = array();
         
+        // add search to History
+        
+        $searchCookie = isset($_COOKIE['search_history']) ? json_decode($_COOKIE['search_history']) : array();
+        $searchCookie = get_object_vars($searchCookie);
+        if(array_key_exists($searchTerm, $searchCookie)){
+            $searchCookie[$searchTerm]+= 1;
+        }else{
+            $searchCookie[$searchTerm] = 1;
+        }
+        
+        setcookie('search_history', json_encode($searchCookie));
+        
         $hourBefore = date('Y-m-d H:i:s', strtotime('-'.Config::get('customsettings.cache_hour').' hour'));
         $locationTweet = tweet::where('SearchLocation', strtolower($searchTerm))->where('updated_at', '>=', $hourBefore)->get();
         
@@ -57,10 +69,13 @@ class IndexController extends Controller
             }
             //TODO optimize routine to fetch tweets other than in cache and return updated ajax
         }else{
+            // clear cache
+            $deletedCache = tweet::where('updated_at', '<', $hourBefore)->delete();
+            
             // fetch tweets from Twitter
             $remoteResult = json_decode(Twitter::get('search/tweets',['q' => $searchTerm,'geocode'=>$geoCode,'format' => 'json']));
 
-            //ToDo check DB if tweet already fetched , else save in database
+            
 
             foreach($remoteResult->statuses as $status){
 
@@ -94,5 +109,15 @@ class IndexController extends Controller
         
         
         return response()->json($return);
+    }
+    
+    /**
+     * Function to view the History of location search
+     * @return  list of search history
+     */
+    public function history(){
+        $searchCookie = isset($_COOKIE['search_history']) ? json_decode($_COOKIE['search_history']) : array();
+        
+        return view('searchHistory')->with('searchHistory', $searchCookie);
     }
 }
